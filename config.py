@@ -7,8 +7,8 @@ from typing import Any
 
 
 version = 2
-models_root_path="./models"
-data_root_path="./data"
+models_root_path="/models"
+data_root_path="/data"
 
 def load_data()->pd.DataFrame:
     file = kagglehub.dataset_download("carrie1/ecommerce-data",path="data.csv")
