@@ -19,6 +19,12 @@ class RFM(BaseModel):
 
 
 
+@app.get("/versions")
+async def getVersions():
+    os.makedirs(models_root_path,exist_ok=True)
+    models = [name for name in os.listdir(models_root_path) if os.path.isdir(os.path.join(models_root_path, name))]
+    return models
+
 @app.get("/{version}/predict")
 async def predict(version:str,
                   Recency: int = Query(),
