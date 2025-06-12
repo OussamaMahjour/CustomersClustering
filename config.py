@@ -7,8 +7,8 @@ from typing import Any
 
 
 version = 2
-models_root_path="./models"
-data_root_path="./data"
+models_root_path="/models"
+data_root_path="/data"
 
 
 model_server = "http://13.48.5.118"
