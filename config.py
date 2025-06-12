@@ -11,8 +11,8 @@ models_root_path="./models"
 data_root_path="./data"
 
 
-model_server = "http://model_server"
-data_server="http://data_server"
+model_server = "http://13.48.5.118"
+data_server="http://16.170.221.129"
 
 
 
