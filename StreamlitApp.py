@@ -51,7 +51,7 @@ def info(model_version:str):
 
 if __name__ == "__main__":
     st.title("Customers Clustering")
-    models = [name for name in os.listdir("./models") if os.path.isdir(os.path.join("./models", name))]
+    models = requests.get(f"{model_server}/versions").json() 
     modelSelection =st.selectbox("Model Version",models,accept_new_options=False)
     
     selection =st.segmented_control("", options=["Predict","Order", "Info"],selection_mode="single",default="Predict")
