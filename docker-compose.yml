@@ -2,49 +2,52 @@ version: "3.9"
 
 services:
 
-  jenkins:
-    image: jenkins/jenkins:lts
-    container_name: jenkins
-    ports:
-      - "8080:8080"
-      - "50000:50000"
-    volumes:
-      - jenkins_home:/var/jenkins_home
-    restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 1g
-
-  model_api:
-    image: mahjouroussama/model-api:latest
-    build:
-      context: .
-      dockerfile: ./docker/builder/DockerFile
-    container_name: model-api
+  streamlit:
+    image: python:3.11-slim
+    container_name: streamlit
     working_dir: /app
     volumes:
       - ./:/app
-    ports:
-      - "8000:8000"
-
-  streamlit:
-    image: python:3.11-slim
-    container_name: streamlit-app
-    working_dir: /app
-    volumes:
-      - ./streamlit:/app
     command: >
       sh -c "pip install -r requirements.txt && streamlit run app.py --server.port=8501 --server.enableCORS=false"
     ports:
-      - "8501:8501"
-    restart: unless-stopped
+      - "80:8501"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512m
+  
+  model_server:
+    image: python:3.11-slim
+    container_name: model_server
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: >
+      sh -c "pip install -r requirements.txt && fastapi run ModelServer.py --port 80 "
+    ports:
+      - "80:80"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512m
+  
+  data_server:
+    image: python:3.11-slim
+    container_name: data_server
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: >
+       sh -c "pip install -r requirements.txt && fastapi run DataServer.py --port 80 "
+    ports:
+      - "80:80"
     deploy:
       resources:
         limits:
           cpus: '0.5'
           memory: 512m
 
-volumes:
-  jenkins_home:
+
