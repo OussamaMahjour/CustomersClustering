@@ -51,7 +51,7 @@ async def predict(version:str,
 @app.delete("/{version}")
 async def deleteModel(version:str):
     version_path = os.path.join(models_root_path, version)
-    shutil.rmtree(version_path, ignore_errors=False, onexc=None)
+    shutil.rmtree(version_path, ignore_errors=False)
     
     
 @app.post("/save/{version}")

@@ -7,9 +7,9 @@ import requests
 def predict(model_version:str):
     customer = st.text_input("Customer")
     predictButton = st.button("Predict")
-    params = requests.get(f"{data_server}/{model_version}/rfm?customerId={customer}").json()[0]
-    print(params)
     if predictButton:
+        params = requests.get(f"{data_server}/{model_version}/rfm?customerId={customer}").json()[0]
+
         prams = {
             "Recency":params["Recency"],
             "Frequency":params["Frequency"],

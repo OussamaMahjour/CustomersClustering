@@ -81,5 +81,5 @@ async def save(version:str,data:Annotated[UploadFile,File()]):
 @app.delete("/{version}")
 async def deleteModel(version:str):
     version_path = os.path.join(data_root_path, version)
-    shutil.rmtree(version_path, ignore_errors=False, onexc=None)
+    shutil.rmtree(version_path, ignore_errors=False)
 
