@@ -58,12 +58,13 @@ if __name__ == "__main__":
     
     version = modelSelection
     
-    if selection == "Predict":
-        predict(version)
-    elif selection == "Order":
-        order(version)
-    elif selection == "Info":
-        info(version)
+    if modelSelection is not None:
+        if selection == "Predict":
+            predict(version)
+        elif selection == "Order":
+            order(version)
+        elif selection == "Info":
+            info(version)
     
 
     

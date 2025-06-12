@@ -67,7 +67,7 @@ async def updateCustomerRFM(version:str,invoice:Invoice):
         "RFM": new_rfm.to_dict(orient="records")
     }
 
-@app.post("/save/{version}")
+@app.post("/save/rfm/{version}")
 async def save(version:str,data:Annotated[UploadFile,File()]):
     data_path = os.path.join(data_root_path,version,"rfm.csv")
     version_path = os.path.join(data_root_path, version)
@@ -77,4 +77,9 @@ async def save(version:str,data:Annotated[UploadFile,File()]):
         
         
     return f"Save data on version {version}"
+
+@app.delete("/{version}")
+async def deleteModel(version:str):
+    version_path = os.path.join(data_root_path, version)
+    shutil.rmtree(version_path, ignore_errors=False, onexc=None)
 
