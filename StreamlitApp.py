@@ -52,7 +52,7 @@ def info(model_version:str):
     FxM = requests.get(f"{model_server}/info/{model_version}/FxM")
     RxM = requests.get(f"{model_server}/info/{model_version}/RxM")
     
-    for name,eval in evals:
+    for name,eval in evals.items():
         st.text(f"{name}:{eval}")
     st.image(PCA.content,caption="PCA")
     st.image(RxF.content,caption="RxF")
