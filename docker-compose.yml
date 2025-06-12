@@ -28,11 +28,6 @@ services:
       - ./:/app
     ports:
       - "8000:8000"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 512m
 
   streamlit:
     image: python:3.11-slim
