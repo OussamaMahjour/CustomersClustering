@@ -1,10 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,File,UploadFile
 import pandas as pd
 import os
 from pydantic import BaseModel
 from config import data_root_path
 from datetime import datetime
 app = FastAPI()
+from typing import Annotated
+import shutil
 
 
 chunksize = 100000
@@ -65,4 +67,14 @@ async def updateCustomerRFM(version:str,invoice:Invoice):
         "RFM": new_rfm.to_dict(orient="records")
     }
 
+@app.post("/save/{version}")
+async def save(version:str,data:Annotated[UploadFile,File()]):
+    data_path = os.path.join(data_root_path,version,"rfm.csv")
+    version_path = os.path.join(data_root_path, version)
+    os.makedirs(version_path, exist_ok=True)
+    with open(data_path,"wb") as buffer:
+        shutil.copyfileobj(data.file,buffer) 
+        
+        
+    return f"Save data on version {version}"
 
