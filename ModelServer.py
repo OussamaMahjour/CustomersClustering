@@ -52,8 +52,9 @@ async def predict(version:str,
 @app.post("/save/{version}")
 async def save(version:str,model:Annotated[UploadFile,File()],scaler:Annotated[UploadFile,File()]):
     model_path = os.path.join(models_root_path,version,"model.pkl")
-    scaler_path = os.path.join(models_root_path,version,"model.pkl")
-    
+    scaler_path = os.path.join(models_root_path,version,"scaler.pkl")
+    version_path = os.path.join(models_root_path, version)
+    os.makedirs(version_path, exist_ok=True)
     with open(model_path,"wb") as buffer:
         shutil.copyfileobj(model.file,buffer) 
     with open(scaler_path,"wb") as buffer:
