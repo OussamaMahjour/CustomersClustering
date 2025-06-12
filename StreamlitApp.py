@@ -45,7 +45,20 @@ def order(data_version:str):
     
 
 def info(model_version:str):
-    pass
+    evals = requests.get(f"{model_server}/info/{model_version}/evals").json()
+    
+    PCA = requests.get(f"{model_server}/info/{model_version}/PCA")
+    RxF = requests.get(f"{model_server}/info/{model_version}/RxF")
+    FxM = requests.get(f"{model_server}/info/{model_version}/FxM")
+    RxM = requests.get(f"{model_server}/info/{model_version}/RxM")
+    
+    for name,eval in evals:
+        st.text(f"{name}:{eval}")
+    st.image(PCA.content,caption="PCA")
+    st.image(RxF.content,caption="RxF")
+    st.image(FxM.content,caption="FxM")
+    st.image(RxM.content,caption="RxM")
+    
 
 
 
