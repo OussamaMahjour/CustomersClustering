@@ -84,24 +84,36 @@ async def save(
     version_path = os.path.join(models_root_path, version)
     os.makedirs(version_path, exist_ok=True)
     with open(model_path,"wb") as buffer:
+        
         shutil.copyfileobj(model.file,buffer) 
     with open(scaler_path,"wb") as buffer:
         shutil.copyfileobj(scaler.file,buffer)
+        
     with open(label_map_path,"wb") as buffer:
         shutil.copyfileobj(label_map.file,buffer) 
+        
     with open(evals_path,"wb") as buffer:
         shutil.copyfileobj(evals.file,buffer) 
+        
     with open(PCA_path,"wb") as buffer:
         shutil.copyfileobj(PCA.file,buffer)
+        
     with open(RxF_path,"wb") as buffer:
-        shutil.copyfileobj(RxF.file,buffer) 
+        shutil.copyfileobj(RxF.file,buffer)
+         
     with open(FxM_path,"wb") as buffer:
         shutil.copyfileobj(FxM.file,buffer)
+        
     with open(RxM_path,"wb") as buffer:
         shutil.copyfileobj(RxM.file,buffer)  
         
         
     return f"Save model on version {version}"
+
+@app.get("/info/{version}/evals")
+async def getEvals(version:str):
+    evals = joblib.load(os.path.join(models_root_path,version,"evals.pkl"))
+    return evals
 
 @app.get("/info/{version}/PCA")
 async def getPCA(version:str):
