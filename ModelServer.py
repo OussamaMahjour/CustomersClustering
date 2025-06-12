@@ -7,6 +7,8 @@ from pydantic import BaseModel
 from sklearn.preprocessing import StandardScaler
 from typing import Annotated
 import shutil
+from fastapi.responses import FileResponse
+
 
 app = FastAPI()
 
@@ -55,10 +57,30 @@ async def deleteModel(version:str):
     
     
 @app.post("/save/{version}")
-async def save(version:str,model:Annotated[UploadFile,File()],scaler:Annotated[UploadFile,File()],label_map:Annotated[UploadFile,File()]):
+async def save(
+        version:str,
+        model:Annotated[UploadFile,File()],
+        scaler:Annotated[UploadFile,File()],
+        label_map:Annotated[UploadFile,File()],
+        evals:Annotated[UploadFile,File()],
+        PCA:Annotated[UploadFile,File()],
+        RxF:Annotated[UploadFile,File()],
+        FxM:Annotated[UploadFile,File()],
+        RxM:Annotated[UploadFile,File()],
+        
+        ):
+    
     model_path = os.path.join(models_root_path,version,"model.pkl")
     scaler_path = os.path.join(models_root_path,version,"scaler.pkl")
     label_map_path = os.path.join(models_root_path,version,"label_map.pkl")
+    evals_path = os.path.join(models_root_path,version,"evals.pkl")
+    PCA_path = os.path.join(models_root_path,version,"PCA.png")
+    RxF_path = os.path.join(models_root_path,version,"RxF.png")
+    FxM_path = os.path.join(models_root_path,version,"FxM.png")
+    RxM_path = os.path.join(models_root_path,version,"RxM.png")
+    
+   
+    
     version_path = os.path.join(models_root_path, version)
     os.makedirs(version_path, exist_ok=True)
     with open(model_path,"wb") as buffer:
@@ -66,7 +88,37 @@ async def save(version:str,model:Annotated[UploadFile,File()],scaler:Annotated[U
     with open(scaler_path,"wb") as buffer:
         shutil.copyfileobj(scaler.file,buffer)
     with open(label_map_path,"wb") as buffer:
-        shutil.copyfileobj(label_map.file,buffer)   
+        shutil.copyfileobj(label_map.file,buffer) 
+    with open(evals_path,"wb") as buffer:
+        shutil.copyfileobj(evals.file,buffer) 
+    with open(PCA_path,"wb") as buffer:
+        shutil.copyfileobj(PCA.file,buffer)
+    with open(RxF_path,"wb") as buffer:
+        shutil.copyfileobj(RxF.file,buffer) 
+    with open(FxM_path,"wb") as buffer:
+        shutil.copyfileobj(FxM.file,buffer)
+    with open(RxM_path,"wb") as buffer:
+        shutil.copyfileobj(RxM.file,buffer)  
         
         
     return f"Save model on version {version}"
+
+@app.get("/info/{version}/PCA")
+async def getPCA(version:str):
+        PCA_path = os.path.join(models_root_path,version,"PCA.png")
+        return FileResponse(PCA_path,media_type='application/octet-stream', filename="PCA.png")
+    
+@app.get("/info/{version}/RxF")
+async def getRxF(version:str):
+        RxF_path = os.path.join(models_root_path,version,"RxF.png")
+        return FileResponse(RxF_path,media_type='application/octet-stream', filename="RxF.png")
+
+@app.get("/info/{version}/FxM")
+async def getFxM(version:str):
+        FxM_path = os.path.join(models_root_path,version,"FxM.png")
+        return FileResponse(FxM_path,media_type='application/octet-stream', filename="FxM.png")
+
+@app.get("/info/{version}/RxM")
+async def getRxM(version:str):
+        RxM_path = os.path.join(models_root_path,version,"RxM.png")
+        return FileResponse(RxM_path,media_type='application/octet-stream', filename="RxM.png")
