@@ -18,7 +18,10 @@ services:
           memory: 1g
 
   model_api:
-    image: python:3.11-slim
+    image: mahjouroussama/model-api:latest
+    build:
+      context: .
+      dockerfile: ./docker/builder/DockerFile
     container_name: model-api
     working_dir: /app
     volumes:
