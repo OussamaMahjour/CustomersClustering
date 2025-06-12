@@ -12,7 +12,7 @@ data_root_path="/data"
 
 def load_data()->pd.DataFrame:
     file = kagglehub.dataset_download("carrie1/ecommerce-data",path="data.csv")
-    df = pd.read_csv(file, encoding="ISO-8859-1")
+    df = pd.read_csv(file, encoding="ISO-8859-1",chunksize=10000)
     return df
 
 
